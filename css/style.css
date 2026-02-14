@@ -1,0 +1,375 @@
+/* ---------- Base ---------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg0: #070a0f;
+  --bg1: #0a0f18;
+  --fg: rgba(230, 237, 243, 0.92);
+  --muted: rgba(230, 237, 243, 0.58);
+
+  --grid: rgba(255, 255, 255, 0.035);
+  --grid2: rgba(255, 255, 255, 0.02);
+
+  --card: rgba(12, 18, 28, 0.55);
+  --cardBorder: rgba(230, 237, 243, 0.12);
+
+  --glow1: rgba(160, 200, 255, 0.1);
+  --glow2: rgba(230, 237, 243, 0.06);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background:
+    radial-gradient(
+      1200px 800px at 50% 40%,
+      rgba(255, 255, 255, 0.06),
+      transparent 60%
+    ),
+    linear-gradient(180deg, var(--bg0), var(--bg1));
+  color: var(--fg);
+  font-family: Georgia, "Times New Roman", serif;
+  overflow: hidden;
+}
+
+/* ---------- Tech background: grid + mesh + grain ---------- */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+
+  /* grid */
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px),
+    linear-gradient(var(--grid2) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid2) 1px, transparent 1px);
+  background-size:
+    54px 54px,
+    54px 54px,
+    10px 10px,
+    10px 10px;
+  opacity: 0.9;
+}
+
+/* subtle mesh vibe (diagonal) */
+body::after {
+  content: "";
+  position: fixed;
+  inset: -40%;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.018) 0px,
+    rgba(255, 255, 255, 0.018) 1px,
+    transparent 1px,
+    transparent 22px
+  );
+  transform: rotate(-6deg);
+  opacity: 0.55;
+  mix-blend-mode: screen;
+}
+
+/* ---------- Layout ---------- */
+.stage {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- Layout ---------- */
+.stage {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2.2rem;
+  position: relative;
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+/* Responsive central glow */
+.hero::before {
+  content: "";
+  position: absolute;
+  width: min(1000px, 95vw);
+  height: min(1000px, 95vw);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+
+  background: radial-gradient(
+    circle at center,
+    rgba(160, 200, 255, 0.18) 0%,
+    rgba(230, 237, 243, 0.1) 30%,
+    rgba(230, 237, 243, 0.05) 45%,
+    transparent 70%
+  );
+
+  z-index: 0;
+}
+
+/* Subtle horizon */
+.hero::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 58%;
+  transform: translateX(-50%);
+  width: min(900px, 90vw);
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(230, 237, 243, 0.28),
+    transparent
+  );
+  opacity: 0.6;
+  z-index: 1;
+}
+
+/* Centered SVG */
+.thinker {
+  position: relative;
+  z-index: 2;
+
+  width: min(620px, 90vw); /* bigger */
+  height: auto;
+
+  color: rgba(255, 255, 255, 0.95); /* stronger contrast */
+
+  filter: drop-shadow(0 0 25px rgba(160, 200, 255, 0.15)) contrast(115%);
+
+  opacity: 0;
+  transform: translateY(18px) scale(0.98);
+  animation: figureIn 1200ms ease forwards;
+}
+
+/* Terminal panel */
+.quote {
+  position: relative;
+  z-index: 3;
+
+  width: min(720px, 92vw);
+  padding: 1.4rem 1.6rem;
+
+  background: rgba(6, 10, 16, 0.96);
+  border: 1px solid rgba(230, 237, 243, 0.22);
+  border-radius: 8px;
+
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.02),
+    0 25px 80px rgba(0, 0, 0, 0.6);
+
+  opacity: 0;
+  transform: translateY(12px);
+  animation: panelIn 1200ms ease forwards;
+  animation-delay: 200ms;
+}
+
+/* Status label */
+.quote::before {
+  content: "thinkery://core";
+  position: absolute;
+  top: -12px;
+  left: 18px;
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  padding: 4px 8px;
+  background: #070a0f;
+  border: 1px solid rgba(230, 237, 243, 0.25);
+  border-radius: 4px;
+  color: rgba(230, 237, 243, 0.65);
+}
+
+/* Accent line */
+.quote::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 14px; /* start below rounded corner */
+  bottom: 14px; /* end above bottom curve */
+  width: 2px;
+}
+
+/* Text */
+.quote h1 {
+  font-family: "Roboto Condensed", sans-serif;
+  font-weight: 300;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  letter-spacing: 1px;
+}
+
+.quote p {
+  margin-top: 0.9rem;
+  font-family: "Roboto Condensed", sans-serif;
+  font-weight: 300;
+  font-size: 0.95rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: rgba(230, 237, 243, 0.65);
+}
+
+.quote::before {
+  content: "thinkery://core";
+  position: absolute;
+  top: -12px;
+  left: 18px;
+  font-size: 0.65rem;
+  font-family: "Roboto Condensed", sans-serif;
+  letter-spacing: 2px;
+  padding: 4px 8px;
+  background: #070a0f;
+  border: 1px solid rgba(230, 237, 243, 0.25);
+  border-radius: 4px;
+  color: rgba(230, 237, 243, 0.65);
+}
+
+/* ---------- Portal Layer ---------- */
+.portal {
+  margin-top: 2.4rem;
+  display: flex;
+  gap: 2.2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  z-index: 3;
+}
+
+.node {
+  width: 140px; /* fixed module width */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  text-decoration: none;
+  color: rgba(230, 237, 243, 0.7);
+
+  transition: all 0.25s ease;
+}
+
+/* Wireframe square */
+.glyph {
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(230, 237, 243, 0.35);
+  border-radius: 6px;
+  position: relative;
+  transition: all 0.25s ease;
+}
+
+/* Inner node dot */
+.glyph::after {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: rgba(230, 237, 243, 0.6);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.25s ease;
+}
+
+/* Label */
+.label {
+  margin-top: 0.8rem;
+  font-family: "Roboto Condensed", sans-serif;
+  font-weight: 300;
+  font-size: 0.75rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+
+  min-height: 32px; /* forces visual alignment */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Hover effect */
+.node:hover {
+  color: rgba(255, 255, 255, 1);
+  transform: translateY(-4px);
+}
+
+.node:hover .glyph {
+  border-color: rgba(160, 200, 255, 0.9);
+  box-shadow: 0 0 18px rgba(160, 200, 255, 0.25);
+}
+
+.node:hover .glyph::after {
+  background: rgba(160, 200, 255, 1);
+}
+
+/* Animations */
+@keyframes figureIn {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes panelIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---------- Footer ---------- */
+.footer {
+  text-align: center;
+  padding: 1.2rem 0 1.6rem;
+
+  font-family: "Roboto Condensed", sans-serif;
+  font-weight: 300;
+
+  font-size: 0.75rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+
+  color: rgba(230, 237, 243, 0.45);
+}
+
+/* ---------- Animations ---------- */
+@keyframes riseIn {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---------- Mobile tweaks ---------- */
+@media (max-height: 740px) {
+  body {
+    overflow: auto;
+  }
+  .hero {
+    padding-top: 2rem;
+  }
+}
