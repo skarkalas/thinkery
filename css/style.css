@@ -155,7 +155,7 @@ body::after {
 
   color: rgba(255, 255, 255, 0.95); /* stronger contrast */
 
-  filter: drop-shadow(0 0 25px rgba(160, 200, 255, 0.15)) contrast(115%);
+  filter: drop-shadow(0 0 25px rgba(160, 200, 255, 0.55)) contrast(115%);
 
   opacity: 0;
   transform: translateY(18px) scale(0.98);
